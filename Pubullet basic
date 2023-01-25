@@ -1,3 +1,6 @@
+# python enviroment in terminal or other tool
+Ipython
+
 # create floor with inbuilt measurements
 floor_shape  = p.createCollisionShape(p.GEOM_PLANE)
 
