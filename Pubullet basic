@@ -1,0 +1,15 @@
+# create floor with inbuilt measurements
+floor_shape  = p.createCollisionShape(p.GEOM_PLANE)
+
+floor = p.createMultiBody(floor_shape, floor_shape)
+
+# create and shape box with inbuilt measurements and shaped edges
+
+box_shape  = p.createCollisionShape(p.GEOM_BOX, halfExtents=[1,1,1])
+
+# set graph surface and behaviour
+box = p.createMultiBody(box_shape, box_shape)
+
+p.setGravity(0, 0, -10)
+
+p.setRealTimeSimulation(1)
