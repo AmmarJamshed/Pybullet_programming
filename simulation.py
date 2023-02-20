@@ -8,33 +8,35 @@ class Simulation:
 
     def run_creature(self, cr, iterations=2400):
         pid = self.physicsClientId
-        p.resetSimulation(physicsClientId=pid)
-        p.setPhysicsEngineParameter(enableFileCaching=0, physicsClientId=pid)
+        try:
+            p.resetSimulation(physicsClientId=pid)
+            p.setPhysicsEngineParameter(enableFileCaching=0, physicsClientId=pid)
 
-        p.setGravity(0, 0, -10, physicsClientId=pid)
-        plane_shape = p.createCollisionShape(p.GEOM_PLANE, physicsClientId=pid)
-        floor = p.createMultiBody(plane_shape, plane_shape, physicsClientId=pid)
+            p.setGravity(0, 0, -10, physicsClientId=pid)
+            plane_shape = p.createCollisionShape(p.GEOM_PLANE, physicsClientId=pid)
+            floor = p.createMultiBody(plane_shape, plane_shape, physicsClientId=pid)
 
-        xml_file = 'temp' + str(self.sim_id) + '.urdf'
-        xml_str = cr.to_xml()
-        with open(xml_file, 'w') as f:
-            f.write(xml_str)
-        
-        cid = p.loadURDF(xml_file, physicsClientId=pid)
+            xml_file = 'temp' + str(self.sim_id) + '.urdf'
+            xml_str = cr.to_xml()
+            with open(xml_file, 'w') as f:
+                f.write(xml_str)
+            
+            cid = p.loadURDF(xml_file, physicsClientId=pid)
 
-        p.resetBasePositionAndOrientation(cid, [0, 0, 2.5], [0, 0, 0, 1], physicsClientId=pid)
+            p.resetBasePositionAndOrientation(cid, [0, 0, 2.5], [0, 0, 0, 1], physicsClientId=pid)
 
 
-        for step in range(iterations):
-            p.stepSimulation(physicsClientId=pid)
-            if step % 24 == 0:
-                self.update_motors(cid=cid, cr=cr)
+            for step in range(iterations):
+                p.stepSimulation(physicsClientId=pid)
+                if step % 24 == 0:
+                    self.update_motors(cid=cid, cr=cr)
 
-            pos, orn = p.getBasePositionAndOrientation(cid, physicsClientId=pid)
-            cr.update_position(pos)
-            #print(pos[2])
-            #print(cr.get_distance_travelled())
-        
+                pos, orn = p.getBasePositionAndOrientation(cid, physicsClientId=pid)
+                cr.update_position(pos)
+                #print(pos[2])
+                #print(cr.get_distance_travelled())
+        except:
+            print("sim failed to run creature link count: ", len(cr.get_expanded_links()))        
     
     def update_motors(self, cid, cr):
         """
