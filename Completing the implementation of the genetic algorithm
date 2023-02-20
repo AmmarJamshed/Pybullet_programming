@@ -1,0 +1,62 @@
+# testfit
+def testFitmap(self):
+ fits = [2.5, 1.2, 3.4] 
+ want = [2.5, 3.7, 7.1] 
+ fitmap = population.Population.get_fitness_map(fits) 
+ self.assertEqual(fitmap, want)
+ 
+ ## check for a parent id in the range 0-2 
+ def testSelPar(self): 
+   fits = [2.5, 1.2, 3.4] 
+   fitmap = population.Population.get_fitness_map(fits) 
+   pid = population.Population.select_parent(fitmap) 
+   self.assertLess(pid, 3)
+   
+   ## parent id should be 1 as the first fitness is zero 
+   ## second is 1000 and third is 0.1 , so second should 
+   ## almost always be selected 
+   def testSelPar2(self): 
+    fits = [0, 1000, 0.1] 
+    fitmap = population.Population.get_fitness_map(fits) 
+    pid = population.Population.select_parent(fitmap) 
+    self.assertEqual(pid, 1)
+   
+   class TestGA(unittest.TestCase): 
+     def testBasicGA(self): 
+      pop = population.Population(pop_size=10, gene_count=3) 
+      sim = simulation.ThreadedSim(pool_size=4) 
+      sim.eval_population(pop, 2400) 
+      fits = [cr.get_distance_travelled() for cr in pop.creatures] 
+      self.assertNotEqual(fits[0], 0) 
+      
+   unittest.main()
+    
+... 
+fits = [cr.get_distance_travelled() for cr in pop.creatures] 
+fit_map = population.Population.get_fitness_map(fits) 
+new_creatures = [] for i in range(len(pop.creatures)): 
+ p1_ind = population.Population.select_parent(fit_map) 
+ p2_ind = population.Population.select_parent(fit_map) 
+ p1 = pop.creatures[p1_ind] 
+ p2 = pop.creatures[p2_ind] 
+ # now we have the parents! 
+ self.assertIsNotNone(p1) self.assertIsNotNone(p2)
+ 
+#gene example 
+import random import numpy as np 
+g1 = [[1], [2], [3]] 
+g2 = [[4], [5], [6]] 
+x1 = random.randint(0, len(g1)) 
+x2 = random.randint(0, len(g2)) 
+g3 = np.concatenate((g1[x1:], g2[x2:]))
+
+def testCrossover(self): 
+ g1 = [[1], [2], [3]] 
+ g2 = [[4], [5], [6]] 
+  for i in range(10): 
+   g3 = genome.Genome.crossover(g1, g2) 
+   self.assertGreater(len(g3), 0)
+   
+ 
+ 
+ 
